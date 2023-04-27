@@ -33,8 +33,16 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	exec.Command("git -C ~/blog pull")
-	exec.Command("~/blog/publish.sh")
+	output, err := exec.Command("git -C ~/blog pull").Output()
+	if err != nil {
+		return;
+	}
+	fmt.Println(output)
+	output, err = exec.Command("~/blog/publish.sh").Output()
+	if err != nil {
+		return
+	}
+	fmt.Println(output)
 	fmt.Println("updated the blog to the latest version")
 }
 
