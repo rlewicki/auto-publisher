@@ -35,11 +35,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	output, err := exec.Command("git -C ~/blog pull").Output()
 	if err != nil {
+		fmt.Println(err)
 		return;
 	}
 	fmt.Println(output)
 	output, err = exec.Command("~/blog/publish.sh").Output()
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
 	fmt.Println(output)
