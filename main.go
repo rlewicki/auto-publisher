@@ -1,14 +1,14 @@
 package main
 
 import (
-    "fmt"
-	"log"
-    "net/http"
 	"crypto/hmac"
 	"crypto/sha256"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
 	"os"
 	"os/exec"
-	"io"
 )
 
 func get_hash(secret string, payload []byte) string {
@@ -33,10 +33,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	output, err := exec.Command("git -C ~/blog pull").Output()
+	output, err := exec.Command("git", "-C", "~/blog", "pull").Output()
 	if err != nil {
 		fmt.Println(err)
-		return;
+		return
 	}
 	fmt.Println(output)
 	output, err = exec.Command("~/blog/publish.sh").Output()
