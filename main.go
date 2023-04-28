@@ -39,14 +39,14 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(output)
+	fmt.Println(string(output))
 	publish_script_path := blog_path + "/publish.sh"
 	output, err = exec.Command(publish_script_path).Output()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(output)
+	fmt.Println(string(output))
 	fmt.Println("updated the blog to the latest version")
 }
 
