@@ -18,6 +18,7 @@ func get_hash(secret string, payload []byte) string {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("received a new request...")
 	defer r.Body.Close()
 	body_content, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -33,21 +34,22 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Println("updating blog local repository...")
 	blog_path := os.Getenv("BLOG_PATH")
 	output, err := exec.Command("git", "-C", blog_path, "pull").Output()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(string(output))
+
+	fmt.Println("publishing new version of the blog...")
 	publish_script_path := blog_path + "/publish.sh"
 	output, err = exec.Command(publish_script_path).Output()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(string(output))
-	fmt.Println("updated the blog to the latest version")
+	fmt.Println("new version of the blog released with success")
 }
 
 func main() {
