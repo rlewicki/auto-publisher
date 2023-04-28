@@ -37,15 +37,18 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("updating blog local repository...")
 	blog_path := os.Getenv("BLOG_PATH")
 	fmt.Println("path to blog local repository: ", blog_path)
-	_, err = exec.Command("git", "-C", blog_path, "pull").Output()
+	git_cmd := exec.Command("git", "pull")
+	git_cmd.Dir = blog_path
+	err = git_cmd.Run()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	fmt.Println("publishing new version of the blog...")
-	publish_script_path := blog_path + "/publish.sh"
-	_, err = exec.Command(publish_script_path).Output()
+	publish_cmd := exec.Command("./publish.sh")
+	publish_cmd.Dir = blog_path
+	err = publish_cmd.Run()
 	if err != nil {
 		fmt.Println(err)
 		return
