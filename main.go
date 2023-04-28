@@ -36,6 +36,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("updating blog local repository...")
 	blog_path := os.Getenv("BLOG_PATH")
+	fmt.Println("path to blog local repository: ", blog_path)
 	_, err = exec.Command("git", "-C", blog_path, "pull").Output()
 	if err != nil {
 		fmt.Println(err)
