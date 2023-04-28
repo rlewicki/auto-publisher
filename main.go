@@ -33,13 +33,15 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	output, err := exec.Command("git", "-C", "~/blog", "pull").Output()
+	blog_path := os.Getenv("BLOG_PATH")
+	output, err := exec.Command("git", "-C", blog_path, "pull").Output()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	fmt.Println(output)
-	output, err = exec.Command("~/blog/publish.sh").Output()
+	publish_script_path := blog_path + "/publish.sh"
+	output, err = exec.Command(publish_script_path).Output()
 	if err != nil {
 		fmt.Println(err)
 		return
